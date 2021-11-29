@@ -18,12 +18,27 @@ public class Stopwatch implements ActionListener {
     String minutes_string = String.format("%02d", minutes);
     String hours_string = String.format("%02d", hours);
 
+    Timer timer = new Timer(1000, new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            elapsedTime += 1000;
+            hours = (elapsedTime / 3600000);
+            minutes = (elapsedTime / 60000) % 60;
+            seconds = (elapsedTime / 1000 % 60);
+
+            seconds_string = String.format("%02d", seconds);
+            minutes_string = String.format("%02d", minutes);
+            hours_string = String.format("%02d", hours);
+
+            timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string);
+        }
+    });
+
 
     Stopwatch() {
 
-        timeLabel.setText(hours_string+":"+minutes_string+":"+seconds_string);
+        timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string);
         timeLabel.setBounds(100, 100, 200, 100);
-        timeLabel.setFont(new Font("Verdana", Font.PLAIN,35));
+        timeLabel.setFont(new Font("Verdana", Font.PLAIN, 35));
         timeLabel.setBorder(BorderFactory.createBevelBorder(1));
         timeLabel.setOpaque(true);
         timeLabel.setHorizontalAlignment(JTextField.CENTER);
@@ -50,11 +65,13 @@ public class Stopwatch implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (e.getSource() == startButton) {
+            start();
+        }
     }
 
     void start() {
-
+        timer.start();
     }
 
     void stop() {
